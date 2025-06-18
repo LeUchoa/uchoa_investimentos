@@ -3,8 +3,12 @@
 ![MIT License](https://img.shields.io/badge/license-MIT-blue)  
 ![Excel 365 Compatible](https://img.shields.io/badge/Excel-365%20Compatible-green)
 
-Ferramenta em Excel (aba única **APP**) para projetar patrimônio, renda mensal e estruturar seu mix de FIIs conforme perfil de risco.  
-Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
+> Ferramenta em Excel (aba única **APP**) para projetar patrimônio, renda mensal e estruturar seu mix de FIIs conforme perfil de risco.  
+> Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
+
+---
+
+![Visão Geral da Aba APP](Image/screen.png)
 
 ---
 
@@ -17,7 +21,7 @@ Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
 - [Download](#download)  
 - [Acessibilidade](#acessibilidade)  
 - [Contribuições](#contribuições)  
-- [Licença](#licença)  
+- [Licença](#licença)
 
 ---
 
@@ -47,21 +51,19 @@ Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
 ## Requisitos
 
 - Microsoft **Excel 365** ou **Excel 2021** (para fórmulas de matriz dinâmica: `ÍNDICE` + `ESCOLHER`).  
-- Excel 2016/2019: funciona mantendo a tabela de apoio e usando `SOMASES`.
 
 ---
 
 ## Estrutura da Planilha
 
 - **Aba única: “APP”**  
-  Todas as entradas, cálculos, tabela de alocação e gráfico estão nesta aba.
+  Todas as entradas, cálculos, tabela de alocação e gráfico estão nesta única aba.
 
 - **Named Ranges**  
-  - `inv_Perfil` → perfil de risco (C41)  
-  - `inv_Period` → aporte mensal (C42)  
-  - `inv_Period_2` → mesmo valor de aporte, usado **apenas** na caixa de texto do gráfico  
-  - `perfil_TotalValor` → total de D45:D50  
-  - `%Alocação` → C45:C50  
+  - `inv_Perfil` → célula que contém o perfil de risco.  
+  - `inv_Period` → célula do aporte mensal (C42).  
+  - `inv_Period_2` → usado **apenas** na caixa de texto central do gráfico de rosca.  
+  - Outros nomes (por exemplo, `perfil_TotalValor`) ajudam a deixar as fórmulas mais legíveis.
 
 ---
 
@@ -72,11 +74,11 @@ Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
    - Veja o Montante Sugerido (30 % da renda).
 
 2. **Investimento Mensal**  
-   - Insira: Capital Inicial, Frequência (Mensal), Aporte (`inv_Period`), Reinvestimento, Período (anos), Taxas e Inflação.  
+   - Insira: Capital Inicial, Frequência (Mensal), Aporte (`inv_Period`), Reinvestimento, Período, Taxas e Inflação.  
    - O Excel calcula automaticamente:  
      - **Patrimônio Projetado** (`VF`)  
      - **Patrimônio Corrigido** (inflação)  
-     - **Rendimento Mensal**  
+     - **Rendimento Mensal**
 
 3. **Cenários de Investimento**  
    - Analise projeções de patrimônio e renda em 2, 5, 10, 20 e 30 anos.
@@ -86,38 +88,20 @@ Sem VBA, tudo na aba “APP” e compatível com Excel 365/2021.
    - Confira o valor que será investido por mês (C42 / `inv_Period`).
 
 5. **Alocação em FIIs**  
-   - **% Sugerido** (C45:C50): fórmula matricial  
-     ```excel
-     =ÍNDICE(
-       ESCOLHER(
-         CORRESP(inv_Perfil;{"Conservador";"Moderado";"Agressivo"};0);
-         {…vetor Conservador…};
-         {…vetor Moderado…};
-         {…vetor Agressivo…}
-       );
-       CORRESP(B45;{"PAPEL";"TIJOLO";"HÍBRIDOS";"FOFs";"DESENVOLVIMENTO";"HOTELARIAS"};0)
-     )
-     ```
-   - **R$/mês** (D45:D50):  
-     ```excel
-     =[@%Alocação] * inv_Period
-     ```
-   - **Total** (D51) deve somar exatamente o aporte mensal.
+   - Coluna `%` (C45:C50): fórmula matricial dinâmica (ÍNDICE+ESCOLHER) puxa o benchmark para seu perfil.  
+   - Coluna `R$/mês` (D45:D50): `=[D45 *inv_Period_2`  
+   - Total (D51) deve somar exatamente seu aporte mensal.
 
 6. **Gráfico de Rosca**  
-   - Selecione C45:C50 e insira um **Gráfico de Rosca**.  
-   - Adicione uma **Caixa de Texto** no centro, vincule a:  
-     ```excel
-     =inv_Period_2
-     ```  
-   - Formate rótulos de dados: **Fora da Extremidade** + **Linhas de Conexão** + exiba **Porcentagem**.
+   -- Geração automática a partir de C45:C50.  
+   - Caixa de Texto central vinculada a `=inv_Period_2`, exibindo o total.
 
 ---
 
 ## Download
 
 Baixe a planilha em:  
-[APP.xlsx](APP.xlsx)
+[desafio_dio_excel_invest-calc_ver-final_junho-25.xlsx](desafio_dio_excel_invest-calc_ver-final_junho-25.xlsx)
 
 ---
 
